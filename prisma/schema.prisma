@@ -41,17 +41,20 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  password      String
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  role          String
+  id                   String                 @id @default(cuid())
+  name                 String?
+  password             String
+  email                String?                @unique
+  emailVerified        DateTime?
+  image                String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  accounts             Account[]
+  sessions             Session[]
+  role                 String
+  FinancialAccount     FinancialAccount[]
+  Transaction          Transaction[]
+  RecurringTransaction RecurringTransaction[]
 }
 
 model Role {
@@ -69,4 +72,82 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+// New Model for Financial Accounts
+model FinancialAccount {
+  id           Int           @id @default(autoincrement()) // Unique identifier for each financial account
+  userId       String
+  name         String // Name of the financial account (e.g., "Cash", "Bank Account", "Credit Card")
+  balance      Float         @default(0) // Current balance of the account
+  transactions Transaction[] // One-to-many relation to transactions involving this account
+  isDeleted    Boolean       @default(false) // Indicates if the account is soft-deleted
+  createdAt    DateTime      @default(now()) // Timestamp for when the account was created
+  updatedAt    DateTime      @updatedAt // Timestamp for when the account was last updated
+  user         User          @relation(fields: [userId], references: [id])
+}
+
+model Category {
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  transactions         Transaction[]
+  isDeleted            Boolean                @default(false)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  RecurringTransaction RecurringTransaction[]
+}
+
+model TransactionType {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  transactions Transaction[]
+  isDeleted    Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Transaction {
+  id                 Int              @id @default(autoincrement())
+  amount             Float
+  description        String
+  date               DateTime
+  userId             String
+  user               User             @relation(fields: [userId], references: [id])
+  categoryId         Int
+  category           Category         @relation(fields: [categoryId], references: [id])
+  transactionTypeId  Int
+  transactionType    TransactionType  @relation(fields: [transactionTypeId], references: [id])
+  financialAccountId Int
+  financialAccount   FinancialAccount @relation(fields: [financialAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  isDeleted          Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  Payment            Payment[]
+}
+
+model Payment {
+  id            Int         @id @default(autoincrement())
+  transactionId Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  dueDate       DateTime
+  amount        Float
+  status        String // E.g., 'Pending', 'Completed', etc.
+  isDeleted     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model RecurringTransaction {
+  id          Int      @id @default(autoincrement())
+  amount      Float
+  description String
+  interval    String // E.g., 'Daily', 'Weekly', 'Monthly'
+  nextDate    DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
