@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 
 // Define a type for the transaction data
-type TransactionData = {
+export type TransactionData = {
   amount: number;
   description: string;
   date: string;
@@ -45,7 +45,7 @@ const Stepper: React.FC = () => {
     amount: 0,
     description: '',
     date: '',
-    userId: 'HEllo',
+    userId: '',
     categoryId: 0,
     transactionTypeId: 0,
     financialAccountId: 0,
@@ -140,11 +140,62 @@ const Stepper: React.FC = () => {
   // Function to handle form submission
   const handleSubmit = () => {
     // Logic to submit form data
+    const createAPI = async () => {
+      const url = '/api/transaction';
+      const res = await fetch(url, {
+        method: 'POST', // HTTP method
+        headers: {
+          'Content-Type': 'application/json' // Specify that the content is JSON
+        },
+        body: JSON.stringify(transactionData) // Convert body object to JSON string
+      });
+      const response = await res.json();
+      console.log(response);
+      handleOpenModal();
+    };
+    createAPI();
     console.log('Submitted Data:', transactionData);
+  };
+
+  const [isOpen, setIsOpen] = useState(false); // State to control the modal
+
+  const handleOpenModal = () => {
+    setIsOpen(true); // Function to open the modal
+  };
+
+  const handleCloseModal = () => {
+    setTransactionData({
+      amount: 0,
+      description: '',
+      date: '',
+      userId: '',
+      categoryId: 0,
+      transactionTypeId: 0,
+      financialAccountId: 0,
+      isDeleted: false
+    });
+    setCurrentStep(1)
+    setIsOpen(false); // Function to close the modal
   };
 
   return (
     <div className="flex flex-col items-center p-5 w-full max-w-lg mx-auto">
+      {isOpen && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Successfully Created</h3>
+            <p className="py-4">
+              Your cash flow data is successfully recorded in database. Goodjob.
+            </p>
+            <div className="modal-action">
+              {/* Button to close the modal */}
+              <button className="btn" onClick={handleCloseModal}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Stepper Indicators */}
       <ul className="steps steps-horizontal mb-5">
         <li className={`step ${currentStep >= 1 ? 'step-primary' : ''}`}>
@@ -318,7 +369,7 @@ const Stepper: React.FC = () => {
             Next
           </button>
         ) : (
-          <button className="btn btn-primary" onClick={handleNext}>
+          <button className="btn btn-primary" onClick={handleSubmit}>
             Submit
           </button>
         )}
