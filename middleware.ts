@@ -21,7 +21,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
   if (session && unprotectedRoutes.includes(request.nextUrl.pathname)) {
-    const absoluteURL = new URL('/products', request.nextUrl.origin);
+    const absoluteURL = new URL('/budget/new', request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
   //return request;
