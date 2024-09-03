@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 import {
   Home,
   LineChart,
@@ -7,8 +7,9 @@ import {
   PanelLeft,
   Settings,
   ShoppingCart,
-  Users2
-} from 'lucide-react';
+  Banknote,
+  Users2,
+} from "lucide-react";
 
 import {
   Breadcrumb,
@@ -16,24 +17,24 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
-} from '@/components/ui/breadcrumb';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger
-} from '@/components/ui/tooltip';
-import { Analytics } from '@vercel/analytics/react';
-import { User } from './user';
-import { VercelLogo } from '@/components/icons';
-import Providers from './providers';
-import { NavItem } from './nav-item';
-import { SearchInput } from './search';
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Analytics } from "@vercel/analytics/react";
+import { User } from "./user";
+import { VercelLogo } from "@/components/icons";
+import Providers from "./providers";
+import { NavItem } from "./nav-item";
+import { SearchInput } from "./search";
 
 export default function DashboardLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
@@ -70,8 +71,8 @@ function DesktopNav() {
           <span className="sr-only">Acme Inc</span>
         </Link>
 
-        <NavItem href="budget" label="Budget">
-          <ShoppingCart className="h-5 w-5" />
+        <NavItem href="/budget" label="Budget">
+          <Banknote className="h-5 w-5" />
         </NavItem>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
