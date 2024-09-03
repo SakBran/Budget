@@ -35,7 +35,11 @@ type Props = {
   data: transation[];
 };
 
-const listPage = async ({ data }: Props) => {
+const listPage = async () => {
+  const url = "http://localhost:3000/api/transaction";
+  const res = await fetch(url);
+  const data: transation[] = await res.json();
+
   return (
     <Card>
       <CardHeader>
@@ -103,19 +107,6 @@ const listPage = async ({ data }: Props) => {
       </CardContent>
     </Card>
   );
-};
-
-listPage.getInitialProps = async () => {
-  let pageProps: Props = { data: [] };
-
-  try {
-    const url = "http://localhost:3000/api/transaction";
-    const res = await fetch(url);
-    const data: transation[] = await res.json();
-    pageProps.data = data;
-  } catch (error) {}
-
-  return { pageProps };
 };
 
 export default listPage;
