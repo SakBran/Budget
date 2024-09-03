@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+"use server";
 import {
   Card,
   CardContent,
@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Prisma } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
@@ -37,7 +37,7 @@ type Props = {
 
 const listPage = async () => {
   const url = "http://localhost:3000/api/transaction";
-  const res = await fetch(url, { cache: "no-store" });
+  const res = await fetch(url);
   const data: transation[] = await res.json();
 
   return (
