@@ -41,71 +41,66 @@ const listPage = async () => {
   const data: transation[] = await res.json();
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Finance Records</CardTitle>
-        <CardDescription>View all fiance record.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="all">
-          <div className="flex items-center">
-            <div className="ml-auto flex items-center gap-2">
-              <Link className="btn btn-sm" href={"/budget/new"}>
-                <PlusCircle className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Add Record
-                </span>
-              </Link>
+    <div className="overflow-x-auto ">
+      <div className="card bg-base-100 w-70 ">
+        <div className="card-body">
+          <h2 className="card-header">Finance Records</h2>
+          <p>View all fiance record.</p>
+
+          <Tabs defaultValue="all">
+            <div className="flex items-center">
+              <div className="ml-auto flex items-center gap-2">
+                <Link className="btn btn-sm" href={"/budget/new"}>
+                  <PlusCircle className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                    Add Record
+                  </span>
+                </Link>
+              </div>
             </div>
+            <TabsContent value="all"></TabsContent>
+          </Tabs>
+          <div className="overflow-x-auto">
+            <table className="table table-pin-rows table-pin-cols">
+              <thead>
+                <tr>
+                  <th></th>
+                  <td>Description</td>
+                  <td>Date</td>
+                  <td>User</td>
+                  <td>Category</td>
+                  <td>Transaction Type</td>
+                  <td>Financial Account</td>
+                  <td>Amount</td>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.map((record, index) => {
+                  return (
+                    <tr key={index}>
+                      <th>{index + 1}</th>
+                      <td>{record.description}</td>
+                      <td>{record.date.split("T")[0]}</td>
+                      <td>{record?.user.name}</td>
+                      <td>{record.category.name}</td>
+                      <td>{record.transactionType.name}</td>
+                      <td>{record.financialAccount.name}</td>
+                      <td>{record.amount}</td>
+                    </tr>
+                  );
+                })}
+                <tr>
+                  <td colSpan={7} className="text text-center">
+                    Total
+                  </td>
+                  <td>Amount</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <TabsContent value="all"></TabsContent>
-        </Tabs>
-        <div className="overflow-x-auto">
-          <table className="table table-xs table-pin-rows table-pin-cols">
-            <thead>
-              <tr>
-                <th></th>
-                <td>Description</td>
-                <td>Date</td>
-                <td>User</td>
-                <td>Category</td>
-                <td>Transaction Type</td>
-                <td>Financial Account</td>
-                <td>Amount</td>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((record, index) => {
-                return (
-                  <tr key={index}>
-                    <th>{index + 1}</th>
-                    <td>{record.description}</td>
-                    <td>{record.date.split("T")[0]}</td>
-                    <td>{record?.user.name}</td>
-                    <td>{record.category.name}</td>
-                    <td>{record.transactionType.name}</td>
-                    <td>{record.financialAccount.name}</td>
-                    <td>{record.amount}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-            <tfoot>
-              <tr>
-                <th></th>
-                <td>Description</td>
-                <td>Date</td>
-                <td>User</td>
-                <td>Category</td>
-                <td>Transaction Type</td>
-                <td>Financial Account</td>
-                <td>Amount</td>
-              </tr>
-            </tfoot>
-          </table>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

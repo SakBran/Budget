@@ -1,5 +1,13 @@
 "use client"; // Client-side component
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { CircleArrowLeft, CircleArrowRight, CircleArrowUp } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
@@ -179,202 +187,220 @@ const Stepper: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-5 w-full max-w-lg mx-auto">
-      {isOpen && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Successfully Created</h3>
-            <p className="py-4">
-              Your cash flow data is successfully recorded in database. Goodjob.
-            </p>
-            <div className="modal-action">
-              {/* Button to close the modal */}
-              <button className="btn" onClick={handleCloseModal}>
-                Close
-              </button>
+    <Card>
+      <CardHeader>
+        <CardTitle>Finance Records</CardTitle>
+        <CardDescription>Record your expendse and income here.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col items-center p-5 w-full max-w-lg mx-auto">
+          {isOpen && (
+            <div className="modal modal-open">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Successfully Created</h3>
+                <p className="py-4">
+                  Your cash flow data is successfully recorded in database.
+                  Goodjob.
+                </p>
+                <div className="modal-action">
+                  {/* Button to close the modal */}
+                  <button className="btn" onClick={handleCloseModal}>
+                    Close
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-      {/* Stepper Indicators */}
-      <ul className="steps steps-horizontal mb-5">
-        <li className={`step ${currentStep >= 1 ? "step-primary" : ""}`}>
-          Step 1
-        </li>
-        <li className={`step ${currentStep >= 2 ? "step-primary" : ""}`}>
-          Step 2
-        </li>
-        <li className={`step ${currentStep >= 3 ? "step-primary" : ""}`}>
-          Step 3
-        </li>
-        <li className={`step ${currentStep >= 4 ? "step-primary" : ""}`}>
-          Step 4
-        </li>
-      </ul>
+          )}
+          {/* Stepper Indicators */}
+          <ul className="steps steps-horizontal mb-5">
+            <li className={`step ${currentStep >= 1 ? "step-primary" : ""}`}>
+              Step 1
+            </li>
+            <li className={`step ${currentStep >= 2 ? "step-primary" : ""}`}>
+              Step 2
+            </li>
+            <li className={`step ${currentStep >= 3 ? "step-primary" : ""}`}>
+              Step 3
+            </li>
+            <li className={`step ${currentStep >= 4 ? "step-primary" : ""}`}>
+              Step 4
+            </li>
+          </ul>
 
-      {/* Step Content */}
-      <div className="mb-5 w-full">
-        {currentStep === 1 && (
-          <div>
-            <p>Step 1: Transaction Details</p>
-            <input
-              type="number"
-              name="amount"
-              placeholder="Amount"
-              value={transactionData.amount}
-              onChange={handleInputChange}
-              className="input input-bordered w-full mb-2"
-            />
-            <input
-              type="text"
-              name="description"
-              placeholder="Description"
-              value={transactionData.description}
-              onChange={handleInputChange}
-              className="input input-bordered w-full mb-2"
-            />
-            <input
-              type="date"
-              name="date"
-              value={transactionData.date}
-              onChange={handleInputChange}
-              className="input input-bordered w-full"
-            />
-          </div>
-        )}
-
-        {currentStep === 2 && (
-          <div>
-            <p>Step 2: User and Category Information</p>
-            <input
-              type="text"
-              name="userId"
-              placeholder="User ID"
-              value={transactionData.userId}
-              onChange={handleInputChange}
-              className="hidden"
-            />
-
-            <select
-              id="categoryId"
-              name="categoryId"
-              value={transactionData.categoryId}
-              onChange={handleInputChange}
-              className="select select-bordered w-full mb-2"
-              disabled={loading}
-            >
-              {loading ? (
-                <option>Loading...</option>
-              ) : (
-                <>
-                  <option value="">Select Category</option>
-                  {categories.map((type) => (
-                    <option key={type.id} value={type.id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </>
-              )}
-            </select>
-
-            <select
-              id="transactionTypeId"
-              name="transactionTypeId"
-              value={transactionData.transactionTypeId}
-              onChange={handleInputChange}
-              className="select select-bordered w-full mb-2"
-              disabled={loading}
-            >
-              {loading ? (
-                <option>Loading...</option>
-              ) : (
-                <>
-                  <option value="">Select Transaction Type</option>
-                  {transactionTypes.map((type) => (
-                    <option key={type.id} value={type.id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </>
-              )}
-            </select>
-            {/* </div> */}
-          </div>
-        )}
-
-        {currentStep === 3 && (
-          <div>
-            <p>Step 3: Financial Account Information</p>
-
-            <select
-              id="financialAccountId"
-              name="financialAccountId"
-              value={transactionData.financialAccountId}
-              onChange={handleInputChange}
-              className="select select-bordered w-full mb-2"
-              disabled={loading}
-            >
-              {loading ? (
-                <option>Loading...</option>
-              ) : (
-                <>
-                  <option value="">Select Financial Account</option>
-                  {financialAccount.map((type) => (
-                    <option key={type.id} value={type.id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </>
-              )}
-            </select>
-            <div className="form-control">
-              <label className="cursor-pointer label">
-                <span className="label-text">Is Deleted</span>
+          {/* Step Content */}
+          <div className="mb-5 w-full">
+            {currentStep === 1 && (
+              <div>
+                <p>Step 1: Transaction Details</p>
                 <input
-                  type="checkbox"
-                  name="isDeleted"
-                  checked={transactionData.isDeleted}
+                  type="number"
+                  name="amount"
+                  placeholder="Amount"
+                  value={transactionData.amount}
                   onChange={handleInputChange}
-                  className="checkbox"
+                  className="input input-bordered w-full mb-2"
                 />
-              </label>
-            </div>
-          </div>
-        )}
+                <input
+                  type="text"
+                  name="description"
+                  placeholder="Description"
+                  value={transactionData.description}
+                  onChange={handleInputChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <input
+                  type="date"
+                  name="date"
+                  value={transactionData.date}
+                  onChange={handleInputChange}
+                  className="input input-bordered w-full"
+                />
+              </div>
+            )}
 
-        {currentStep === 4 && (
-          <div>
-            <p>Step 4: Review and Confirm</p>
-            <pre className="bg-gray-100 p-4 rounded w-full">
-              {JSON.stringify(transactionData, null, 2)}
-            </pre>
-            {/* <button className="btn btn-success mt-4" onClick={handleSubmit}>
+            {currentStep === 2 && (
+              <div>
+                <p>Step 2: User and Category Information</p>
+                <input
+                  type="text"
+                  name="userId"
+                  placeholder="User ID"
+                  value={transactionData.userId}
+                  onChange={handleInputChange}
+                  className="hidden"
+                />
+
+                <select
+                  id="categoryId"
+                  name="categoryId"
+                  value={transactionData.categoryId}
+                  onChange={handleInputChange}
+                  className="select select-bordered w-full mb-2"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <option>Loading...</option>
+                  ) : (
+                    <>
+                      <option value="">Select Category</option>
+                      {categories.map((type) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+
+                <select
+                  id="transactionTypeId"
+                  name="transactionTypeId"
+                  value={transactionData.transactionTypeId}
+                  onChange={handleInputChange}
+                  className="select select-bordered w-full mb-2"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <option>Loading...</option>
+                  ) : (
+                    <>
+                      <option value="">Select Transaction Type</option>
+                      {transactionTypes.map((type) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+                {/* </div> */}
+              </div>
+            )}
+
+            {currentStep === 3 && (
+              <div>
+                <p>Step 3: Financial Account Information</p>
+
+                <select
+                  id="financialAccountId"
+                  name="financialAccountId"
+                  value={transactionData.financialAccountId}
+                  onChange={handleInputChange}
+                  className="select select-bordered w-full mb-2"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <option>Loading...</option>
+                  ) : (
+                    <>
+                      <option value="">Select Financial Account</option>
+                      {financialAccount.map((type) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+                <div className="form-control">
+                  <label className="cursor-pointer label">
+                    <span className="label-text">Is Deleted</span>
+                    <input
+                      type="checkbox"
+                      name="isDeleted"
+                      checked={transactionData.isDeleted}
+                      onChange={handleInputChange}
+                      className="checkbox"
+                    />
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 4 && (
+              <div>
+                <p>Step 4: Review and Confirm</p>
+                <pre className="bg-gray-100 p-4 rounded w-full">
+                  {JSON.stringify(transactionData, null, 2)}
+                </pre>
+                {/* <button className="btn btn-success mt-4" onClick={handleSubmit}>
               Submit
             </button> */}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* Navigation Buttons */}
-      <div>
-        <button
-          className="btn btn-secondary mr-2"
-          onClick={handlePrevious}
-          disabled={currentStep === 1}
-        >
-          Previous
-        </button>
-        {currentStep < 4 ? (
-          <button className="btn btn-primary" onClick={handleNext}>
-            Next
-          </button>
-        ) : (
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Submit
-          </button>
-        )}
-      </div>
-    </div>
+          {/* Navigation Buttons */}
+          <div className="nav nav-btn">
+            <button
+              className="btn btn-sm btn-secondary mr-2"
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+            >
+              <CircleArrowLeft />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Previous
+              </span>
+            </button>
+            {currentStep < 4 ? (
+              <button className="btn btn-sm btn-primary" onClick={handleNext}>
+                <CircleArrowRight />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Next
+                </span>
+              </button>
+            ) : (
+              <button className="btn btn-sm btn-primary" onClick={handleSubmit}>
+                <CircleArrowUp />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Submit
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
