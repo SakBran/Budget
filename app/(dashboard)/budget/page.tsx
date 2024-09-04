@@ -41,7 +41,7 @@ const listPage = async () => {
   const data: transation[] = await res.json();
 
   return (
-    <div className="overflow-x-auto card bg-base-100 w-70 shadow-xl">
+    <div className="overflow-x-auto card glass bg-base-100 w-70 ">
       <div className="card-body">
         <h2 className="card-header text-pretty">Finance Records</h2>
 
