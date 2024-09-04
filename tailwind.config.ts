@@ -76,6 +76,6 @@ export default {
   },
   plugins: [require('tailwindcss-animate'), require("daisyui")],
   daisyui: {
-    themes: ["winter"],
+    themes: ["cupcake"],
   },
 } satisfies Config;

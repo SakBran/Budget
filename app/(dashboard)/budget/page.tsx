@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Prisma } from "@prisma/client";
-import { PlusCircle } from "lucide-react";
+import { EllipsisVertical, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -41,63 +41,71 @@ const listPage = async () => {
   const data: transation[] = await res.json();
 
   return (
-    <div className="overflow-x-auto ">
-      <div className="card bg-base-100 w-70 ">
-        <div className="card-body">
-          <h2 className="card-header">Finance Records</h2>
-          <p>View all fiance record.</p>
+    <div className="overflow-x-auto card bg-base-100 w-70 shadow-xl">
+      <div className="card-body">
+        <h2 className="card-header text-pretty">Finance Records</h2>
 
-          <Tabs defaultValue="all">
-            <div className="flex items-center">
-              <div className="ml-auto flex items-center gap-2">
-                <Link className="btn btn-sm" href={"/budget/new"}>
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Record
-                  </span>
-                </Link>
-              </div>
+        <Tabs defaultValue="all">
+          <div className="flex items-center">
+            <div className="ml-auto flex items-center gap-2">
+              <Link className="btn btn-primary btn-sm" href={"/budget/new"}>
+                <PlusCircle className="h-3.5 w-3.5" />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Add Record
+                </span>
+              </Link>
             </div>
-            <TabsContent value="all"></TabsContent>
-          </Tabs>
-          <div className="overflow-x-auto">
-            <table className="table table-pin-rows table-pin-cols">
-              <thead>
-                <tr>
-                  <th></th>
-                  <td>Description</td>
-                  <td>Date</td>
-                  <td>User</td>
-                  <td>Category</td>
-                  <td>Transaction Type</td>
-                  <td>Financial Account</td>
-                  <td>Amount</td>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.map((record, index) => {
-                  return (
-                    <tr key={index}>
-                      <th>{index + 1}</th>
-                      <td>{record.description}</td>
-                      <td>{record.date.split("T")[0]}</td>
-                      <td>{record?.user.name}</td>
-                      <td>{record.category.name}</td>
-                      <td>{record.transactionType.name}</td>
-                      <td>{record.financialAccount.name}</td>
-                      <td>{record.amount}</td>
-                    </tr>
-                  );
-                })}
-                <tr>
-                  <td colSpan={7} className="text text-center">
-                    Total
-                  </td>
-                  <td>Amount</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
+          <TabsContent value="all"></TabsContent>
+        </Tabs>
+        <div className="overflow-x-auto">
+          <table className="table table-md table-pin-rows table-pin-cols">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>User</th>
+                <th>Category</th>
+                <th>Transaction Type</th>
+                <th>Financial Account</th>
+                <th>Amount</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.map((record, index) => {
+                return (
+                  <tr key={index}>
+                    <th>{index + 1}</th>
+                    <td>{record.description}</td>
+                    <td>{record.date.split("T")[0]}</td>
+                    <td>{record?.user.name}</td>
+                    <td>{record.category.name}</td>
+                    <td>{record.transactionType.name}</td>
+                    <td>{record.financialAccount.name}</td>
+                    <td>{record.amount}</td>
+                    <td>
+                      <Link href={""} className="btn btn-sm btn-link">
+                        <EllipsisVertical className="h-3.5 w-3.5" />
+                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                          Detail
+                        </span>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td colSpan={6}></td>
+                <td>Total</td>
+                <td>
+                  {data.reduce((sum, item) => sum + Number(item.amount), 0)}
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
