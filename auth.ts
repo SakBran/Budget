@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "prisma/client"
 import { signInSchema } from "./lib/zod"
+import Google from "next-auth/providers/google"
 
 
 
@@ -47,6 +48,7 @@ export const { handlers, auth } = NextAuth({
 
       },
     }),
+    Google
   ],
   secret: "Power Secret Key",
   session: {
